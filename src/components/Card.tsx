@@ -1,7 +1,7 @@
 import { Component } from 'react';
 
 export interface CardProps {
-  key: number;
+  key: string;
   title: string;
   description: string;
 }
