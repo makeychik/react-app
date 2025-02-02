@@ -1,5 +1,6 @@
-import { Component, createContext, ReactNode } from 'react';
+import { Component, ReactNode } from 'react';
 import { Coin, fetchCoins } from '../services/api';
+import { CryptoContext } from './CryptoContext';
 
 export interface CryptoContextState {
   coins: Coin[];
@@ -14,10 +15,6 @@ export interface CryptoContextState {
 interface CryptoProviderProps {
   children: ReactNode;
 }
-
-export const CryptoContext = createContext<CryptoContextState | undefined>(
-  undefined
-);
 
 class CryptoProvider extends Component<
   CryptoProviderProps,
@@ -65,7 +62,7 @@ class CryptoProvider extends Component<
     try {
       const coins = await fetchCoins();
       this.setState({ coins, loading: false });
-    } catch (error) {
+    } catch {
       this.setState({
         error: 'Failed to load data. Please try again later.',
         loading: false,

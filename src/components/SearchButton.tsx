@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import styles from './SearchButton.module.css';
 
 interface SearchButtonProps {
   onClick: () => void;
@@ -7,22 +8,11 @@ interface SearchButtonProps {
 class SearchButton extends Component<SearchButtonProps> {
   render() {
     return (
-      <button onClick={this.props.onClick} style={styles.button}>
+      <button className={styles.button} onClick={this.props.onClick}>
         Search
       </button>
     );
   }
 }
-
-const styles = {
-  button: {
-    padding: '8px 16px',
-    fontSize: '16px',
-    background: '#61dafb',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-};
 
 export default SearchButton;

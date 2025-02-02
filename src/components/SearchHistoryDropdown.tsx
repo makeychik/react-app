@@ -1,5 +1,5 @@
-import { Component } from "react";
-import styles from "./SearchHistoryDropdown.module.css";
+import { Component } from 'react';
+import styles from './SearchHistoryDropdown.module.css';
 
 interface SearchHistoryDropdownProps {
   history: string[];
@@ -18,14 +18,14 @@ class SearchHistoryDropdown extends Component<SearchHistoryDropdownProps> {
           limitedHistory.map((query, index) => (
             <li
               key={index}
-              className={styles["dropdown-item"]}
+              className={styles['dropdown-item']}
               onClick={() => onSelect(query)}
             >
               {query}
             </li>
           ))
         ) : (
-          <li className={styles["dropdown-empty"]}>No recent searches</li>
+          <li className={styles['dropdown-empty']}>No recent searches</li>
         )}
       </ul>
     );
