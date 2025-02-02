@@ -4,6 +4,8 @@ export interface CardProps {
   key: string;
   title: string;
   description: string;
+  // image: URL;
+  // current_price: number;
 }
 
 export default class Card extends Component<CardProps> {

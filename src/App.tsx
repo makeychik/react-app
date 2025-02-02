@@ -1,17 +1,14 @@
 import './App.css';
+import Header from './components/Header';
 import Main from './components/Main';
+import CryptoProvider from './context/CryptoContext';
 
 function App() {
   return (
-    <>
-      <div>
-        <form action="">
-          <input type="search" />
-          <button>Search</button>
-        </form>
-      </div>
+    <CryptoProvider>
+      <Header />
       <Main />
-    </>
+    </CryptoProvider>
   );
 }
 
