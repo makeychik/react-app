@@ -22,9 +22,19 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     console.error('Error caught by ErrorBoundary:', error, errorInfo);
   }
 
+  handleRetry = () => {
+    this.setState({ hasError: false });
+  };
+
   render() {
     if (this.state.hasError) {
-      return <h2>Something went wrong. Please refresh the page.</h2>;
+      console.log(this.state.hasError);
+      return (
+        <div>
+          <h2>Something went wrong. Please retry</h2>
+          <button onClick={this.handleRetry}>Retry</button>
+        </div>
+      );
     }
     return this.props.children;
   }

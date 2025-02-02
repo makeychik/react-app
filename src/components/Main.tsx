@@ -5,6 +5,7 @@ import ErrorBoundary from './ErrorBoundary';
 import styles from './Main.module.css';
 import { Coin } from '../services/api';
 import { CryptoContextState } from '../context/CryptoProvider';
+import FaultyButton from './FaultyButton';
 
 class Main extends Component {
   static contextType = CryptoContext;
@@ -27,6 +28,10 @@ class Main extends Component {
     return (
       <main className={styles.main}>
         <ErrorBoundary>
+          <div className={styles['button-container']}>
+            <FaultyButton />
+          </div>
+
           {loading ? (
             <p className={styles['loading']}>Loading...</p>
           ) : error ? (
