@@ -11,8 +11,7 @@ const API_URL = 'https://api.coingecko.com/api/v3/coins/markets';
 
 export const fetchCoins = async (): Promise<Coin[]> => {
   try {
-    const API_KEY = import.meta.env.COINGECKO_API_KEY;
-
+    const API_KEY = import.meta.env.VITE_COINGECKO_API_KEY;
     const options = {
       method: 'GET',
       headers: {
@@ -27,14 +26,17 @@ export const fetchCoins = async (): Promise<Coin[]> => {
     );
 
     if (!response.ok) {
-      throw new Error(`API Error: ${response.status}`);
+      const errorMessage = `Error ${response.status}: ${
+        response.statusText || 'Something went wrong'
+      }`;
+      throw new Error(errorMessage);
     }
 
     const data: Coin[] = await response.json();
 
     return data;
-  } catch (error) {
-    console.error('Error fetching coins:', error);
+  } catch (error: any) {
+    console.error('Error fetching coins:', error.message || error);
     throw error;
   }
 };
