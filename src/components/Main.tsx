@@ -2,33 +2,46 @@ import { Component } from 'react';
 import { CryptoContext, CryptoContextState } from '../context/CryptoContext';
 import CardList from './CardList';
 import ErrorBoundary from './ErrorBoundary';
+import styles from './Main.module.css';
 
 class Main extends Component {
   static contextType = CryptoContext;
 
   render() {
     const context = this.context as CryptoContextState;
-    if (!context) return <p>Error: Context not available</p>;
+    const { coins, searchQuery, error, loading } = context;
 
-    const { coins, searchQuery } = context;
-
-    const items = coins
+    const filteredItems = coins
       .filter((coin) =>
         coin.name.toLowerCase().includes(searchQuery.toLowerCase())
       )
       .map((coin) => ({
         id: coin.id,
         title: coin.name,
-        description: coin.symbol,
+        description: `Symbol: ${coin.symbol.toUpperCase()} | Price: $${coin.current_price.toFixed(2)}`,
+        image: coin.image,
       }));
 
     return (
-      <>
-        <h1>Cryptocurrency List</h1>
+      <main className={styles.main}>
         <ErrorBoundary>
-          <CardList items={items} />
+          {loading ? (
+            <p className={styles['loading']}>Loading...</p>
+          ) : error ? (
+            <div className={styles['error-message']}>
+              <p>{error}</p>
+              <button
+                className={styles['retry-button']}
+                onClick={context.refreshCoins}
+              >
+                Retry
+              </button>
+            </div>
+          ) : (
+            <CardList items={filteredItems} />
+          )}
         </ErrorBoundary>
-      </>
+      </main>
     );
   }
 }

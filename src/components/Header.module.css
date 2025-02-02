@@ -1,0 +1,13 @@
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background-color: #282c34;
+}
+
+.top-controls {
+  display: flex;
+  gap: 8px;
+}
