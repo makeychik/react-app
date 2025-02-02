@@ -11,13 +11,19 @@ const API_URL = 'https://api.coingecko.com/api/v3/coins/markets';
 
 export const fetchCoins = async (): Promise<Coin[]> => {
   try {
-    const cachedData = localStorage.getItem('coinData');
-    if (cachedData) {
-      return JSON.parse(cachedData);
-    }
+    const API_KEY = import.meta.env.COINGECKO_API_KEY;
+
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        'x-cg-demo-api-key': API_KEY,
+      },
+    };
 
     const response = await fetch(
-      `${API_URL}?vs_currency=usd&order=market_cap_desc&per_page=10&page=1`
+      `${API_URL}?vs_currency=usd&order=market_cap_desc&per_page=20&page=1`,
+      options
     );
 
     if (!response.ok) {
@@ -25,8 +31,6 @@ export const fetchCoins = async (): Promise<Coin[]> => {
     }
 
     const data: Coin[] = await response.json();
-
-    localStorage.setItem('coinData', JSON.stringify(data));
 
     return data;
   } catch (error) {
