@@ -42,7 +42,7 @@ class CryptoProvider extends Component<
     this.setState((prevState) => {
       const updatedHistory = [...prevState.searchHistory];
 
-      if (!updatedHistory.includes(query)) {
+      if (query.trim() !== '' && !updatedHistory.includes(query)) {
         updatedHistory.push(query);
 
         if (updatedHistory.length > 10) {
