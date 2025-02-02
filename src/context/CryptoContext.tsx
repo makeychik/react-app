@@ -6,37 +6,57 @@ export interface CryptoContextState {
   loading: boolean;
   error: string | null;
   searchQuery: string;
+  searchHistory: string[];
   setSearchQuery: (query: string) => void;
   refreshCoins: () => void;
 }
 
 interface CryptoProviderProps {
-  children: ReactNode; // ✅ Fix: Define children prop
+  children: ReactNode;
 }
 
 export const CryptoContext = createContext<CryptoContextState | undefined>(
   undefined
 );
 
-export default class CryptoProvider extends Component<
+class CryptoProvider extends Component<
   CryptoProviderProps,
   CryptoContextState
 > {
   constructor(props: CryptoProviderProps) {
     super(props);
 
+    const storedHistory = JSON.parse(
+      localStorage.getItem('searchHistory') || '[]'
+    );
+
     this.state = {
       coins: [],
       loading: true,
       error: null,
       searchQuery: '',
+      searchHistory: storedHistory,
       setSearchQuery: this.handleSearchQuery,
       refreshCoins: this.loadCoins,
     };
   }
 
   handleSearchQuery = (query: string) => {
-    this.setState({ searchQuery: query });
+    this.setState((prevState) => {
+      const updatedHistory = [...prevState.searchHistory];
+
+      if (!updatedHistory.includes(query)) {
+        updatedHistory.push(query);
+
+        if (updatedHistory.length > 10) {
+          updatedHistory.shift();
+        }
+
+        localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
+      }
+
+      return { searchQuery: query, searchHistory: updatedHistory };
+    });
   };
 
   loadCoins = async () => {
@@ -46,7 +66,10 @@ export default class CryptoProvider extends Component<
       const coins = await fetchCoins();
       this.setState({ coins, loading: false });
     } catch (error) {
-      this.setState({ error: 'Failed to load coins', loading: false });
+      this.setState({
+        error: 'Failed to load data. Please try again later.',
+        loading: false,
+      });
     }
   };
 
@@ -62,3 +85,5 @@ export default class CryptoProvider extends Component<
     );
   }
 }
+
+export default CryptoProvider;

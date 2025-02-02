@@ -1,8 +1,29 @@
 import React, { Component } from 'react';
 import { CryptoContext, CryptoContextState } from '../context/CryptoContext';
+import styles from './SearchBar.module.css';
+import SearchHistoryDropdown from './SearchHistoryDropdows';
 
-export default class SearchBar extends Component {
+interface SearchBarState {
+  isFocused: boolean;
+}
+
+class SearchBar extends Component<{}, SearchBarState> {
   static contextType = CryptoContext;
+
+  constructor(props: {}) {
+    super(props);
+    this.state = {
+      isFocused: false,
+    };
+  }
+
+  handleFocus = () => {
+    this.setState({ isFocused: true });
+  };
+
+  handleBlur = () => {
+    setTimeout(() => this.setState({ isFocused: false }), 150);
+  };
 
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const context = this.context as CryptoContextState;
@@ -11,23 +32,37 @@ export default class SearchBar extends Component {
     }
   };
 
+  handleSelectQuery = (query: string) => {
+    const context = this.context as CryptoContextState;
+    if (context) {
+      context.setSearchQuery(query);
+    }
+  };
+
   render() {
+    const context = this.context as CryptoContextState;
+    const { isFocused } = this.state;
+
     return (
-      <input
-        type="text"
-        placeholder="Search for a coin..."
-        onChange={this.handleChange}
-        style={styles.input}
-      />
+      <div className={styles['search-container']}>
+        <input
+          className={styles['search-bar']}
+          type="text"
+          placeholder="Search for a coin..."
+          onFocus={this.handleFocus}
+          onBlur={this.handleBlur}
+          onChange={this.handleChange}
+          value={context.searchQuery}
+        />
+        {isFocused && (
+          <SearchHistoryDropdown
+            history={context.searchHistory}
+            onSelect={this.handleSelectQuery}
+          />
+        )}
+      </div>
     );
   }
 }
 
-const styles = {
-  input: {
-    padding: '8px',
-    fontSize: '16px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-  },
-};
+export default SearchBar;
