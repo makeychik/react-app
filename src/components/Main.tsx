@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { CryptoContext, CryptoContextState } from '../context/CryptoContext';
 import CardList from './CardList';
+import ErrorBoundary from './ErrorBoundary';
 
 class Main extends Component {
   static contextType = CryptoContext;
@@ -24,7 +25,9 @@ class Main extends Component {
     return (
       <>
         <h1>Cryptocurrency List</h1>
-        <CardList items={items} />
+        <ErrorBoundary>
+          <CardList items={items} />
+        </ErrorBoundary>
       </>
     );
   }
