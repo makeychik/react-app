@@ -6,6 +6,7 @@ import styles from './Main.module.css';
 import { Coin } from '../services/api';
 import { CryptoContextState } from '../context/CryptoProvider';
 import FaultyButton from './FaultyButton';
+import Loader from './Loader';
 
 class Main extends Component {
   static contextType = CryptoContext;
@@ -33,7 +34,7 @@ class Main extends Component {
           </div>
 
           {loading ? (
-            <p className={styles['loading']}>Loading...</p>
+            <Loader />
           ) : error ? (
             <div className={styles['error-message']}>
               <p>{error}</p>
