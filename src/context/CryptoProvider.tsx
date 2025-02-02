@@ -62,11 +62,16 @@ class CryptoProvider extends Component<
     try {
       const coins = await fetchCoins();
       this.setState({ coins, loading: false });
-    } catch (error: any) {
-      this.setState({
-        error: error.message || 'Failed to load data. Please try again later.',
-        loading: false,
-      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        this.setState({
+          error:
+            error.message || 'Failed to load data. Please try again later.',
+          loading: false,
+        });
+      } else {
+        console.error('An unknown error occurred: ', error);
+      }
     }
   };
 

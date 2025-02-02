@@ -35,8 +35,12 @@ export const fetchCoins = async (): Promise<Coin[]> => {
     const data: Coin[] = await response.json();
 
     return data;
-  } catch (error: any) {
-    console.error('Error fetching coins:', error.message || error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error fetching coins:', error.message || error);
+    } else {
+      console.error('An unknown error occurred:', error);
+    }
     throw error;
   }
 };
